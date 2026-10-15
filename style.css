@@ -1,0 +1,228 @@
+/* layout: archetype=Long Document · axis=left-biased · date=2026-10-15 */
+/*
+ * はしるし のサポートの頁。色はアプリの token（src/ui/tokens.ts「アスファルトと中央線」）から取る。
+ * 黄色（#F2B705）は地に対して 1.8:1 しかないので、文字には使わず、必ず ink の枠か ink の文字と組む。
+ * 書体: 外部フォントは読み込まない（訪問者の情報を第三者に送らないため）。日本語のシステムフォントを指定する。
+ * アプリは light だけ（ADR-0011）なので、頁も light に固定する。
+ */
+:root {
+  color-scheme: light;
+  --ink: #14181b; /* 本文・見出し・リンク（白の上で 17.9:1） */
+  --ink-soft: #4f585e; /* 補足（白の上で 7.0:1） */
+  --ground: #ffffff;
+  --line: #d6dbde; /* 装飾の区切り線だけ */
+  --accent: #f2b705; /* しるしの塗り。必ず ink の枠と組む */
+  --accent-deep: #a87900; /* リンクの下線（装飾。文字の色ではない） */
+}
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  overflow-x: clip;
+}
+body {
+  margin: 0;
+  background: var(--ground);
+  color: var(--ink);
+  font-family:
+    'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Yu Gothic', 'Noto Sans JP', Meiryo, sans-serif;
+  font-size: 1rem;
+  font-weight: 400;
+}
+:lang(ja) {
+  line-break: strict;
+  word-break: normal;
+  overflow-wrap: anywhere;
+  line-height: 1.75;
+  letter-spacing: 0.02em;
+}
+:lang(ja) h1,
+:lang(ja) h2,
+:lang(ja) h3 {
+  word-break: auto-phrase;
+  line-height: 1.4;
+  letter-spacing: 0;
+}
+@supports (text-autospace: normal) {
+  :lang(ja) {
+    text-autospace: normal;
+  }
+}
+
+.page {
+  width: min(36em, 100% - 32px);
+  margin: 0 auto;
+  padding: 24px 0 96px;
+}
+
+header {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 24px;
+  border-bottom: 2px solid var(--ink);
+}
+.mark {
+  display: block;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 2px solid var(--ink);
+}
+header a {
+  color: var(--ink);
+  font-weight: 700;
+  text-decoration: none;
+}
+header a:hover {
+  text-decoration: underline;
+  text-decoration-color: var(--accent-deep);
+}
+
+h1 {
+  font-size: clamp(1.75rem, 1.2vw + 1.45rem, 2.25rem);
+  font-weight: 700;
+  margin: 64px 0 12px;
+}
+h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 64px 0 12px;
+}
+h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 40px 0 8px;
+}
+p,
+li {
+  margin: 0 0 12px;
+}
+ul {
+  padding-left: 1.4em;
+  margin: 0 0 12px;
+}
+.lead {
+  color: var(--ink-soft);
+}
+.meta {
+  color: var(--ink-soft);
+  font-size: 0.9375rem;
+}
+
+/* 要点: しるしの丸を行頭に置く（黄色の塗り + ink の枠） */
+.summary {
+  list-style: none;
+  margin: 40px 0 0;
+  padding: 16px 0 4px;
+  border-top: 2px solid var(--ink);
+  border-bottom: 1px solid var(--line);
+}
+.summary li {
+  position: relative;
+  padding-left: 28px;
+  margin-bottom: 12px;
+}
+.summary li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.5em;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 2px solid var(--ink);
+}
+
+.links {
+  list-style: none;
+  padding: 0;
+  margin: 24px 0 0;
+}
+.links li {
+  margin-bottom: 12px;
+}
+.links a {
+  font-weight: 700;
+}
+
+a {
+  color: var(--ink);
+  text-decoration-color: var(--accent-deep);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.25em;
+}
+a:hover {
+  text-decoration-color: var(--ink);
+}
+a:focus-visible {
+  outline: 3px solid var(--ink);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 6px var(--accent);
+  border-radius: 2px;
+}
+
+dl {
+  margin: 0;
+}
+dt {
+  font-weight: 700;
+  margin: 24px 0 4px;
+}
+dd {
+  margin: 0 0 12px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0 0 24px;
+}
+caption {
+  text-align: left;
+  font-weight: 700;
+  padding-bottom: 8px;
+}
+th,
+td {
+  text-align: left;
+  vertical-align: top;
+  padding: 12px 8px 12px 0;
+  border-bottom: 1px solid var(--line);
+}
+th {
+  width: 30%;
+  font-weight: 700;
+}
+@media (max-width: 480px) {
+  th,
+  td {
+    display: block;
+    width: 100%;
+    padding: 8px 0;
+  }
+  th {
+    border-bottom: 0;
+    padding-bottom: 0;
+  }
+}
+
+footer {
+  margin-top: 96px;
+  padding-top: 24px;
+  border-top: 2px solid var(--ink);
+}
+footer .disclaimer {
+  font-weight: 700;
+}
+footer ul {
+  padding-left: 1.2em;
+}
+footer li {
+  color: var(--ink-soft);
+  font-size: 0.9375rem;
+}
